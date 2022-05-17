@@ -9,7 +9,7 @@
     "generate": "generate:prisma && generate:gqlcodegen",
     "generate:gqlcodegen": "graphql-codegen --config codegen.yml",
     "generate:prisma": "prisma generate",
-    "vercel-build": "prisma:generate && next build"
+    "vercel-build": "generate:prisma && next build"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^1.8.0",
