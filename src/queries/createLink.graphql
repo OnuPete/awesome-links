@@ -1,0 +1,9 @@
+mutation CreateLink($title: String!, $url: String!, $imageUrl: String!, $category: String!, $description: String!) {
+    createLink(title: $title, url: $url, imageUrl: $imageUrl, category: $category, description: $description) {
+      title
+      url
+      imageUrl
+      category
+      description
+    }
+  }
