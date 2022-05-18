@@ -3,7 +3,7 @@ import {
   AllLinksDocument,
   AllLinksQuery,
   AllLinksQueryVariables,
-} from "../../generated/graphql";
+} from "../generated/graphql";
 import { useInfiniteQuery, UseInfiniteQueryOptions } from "react-query";
 
 export function fetcher<TData, TVariables>(

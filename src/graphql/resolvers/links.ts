@@ -36,7 +36,6 @@ export const links: QueryResolvers["links"] = async (_parent, args, ctx) => {
         id: "asc",
       },
     });
-    // return response
     const result = {
       pageInfo: {
         endCursor: myCursor,
