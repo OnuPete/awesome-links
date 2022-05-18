@@ -1,13 +1,11 @@
 import Head from 'next/head';
-import { graphQLClient } from '../../lib/graphql-request';
+import { graphQLClient } from '../lib/graphql-request';
 import { AwesomeLink } from '../components/AwesomeLink';
 import { useAllLinksInfiniteQuery } from '../queries/useAllLinksInfiniteQuery';
 
 export default function Home() {
-  // const [after, setAfter] = useState<string>()
   const {data, isLoading, error, fetchNextPage, hasNextPage } = useAllLinksInfiniteQuery(graphQLClient, {
     first: 2,
-    // after,
   }, {getNextPageParam: (lastPage) => lastPage.links.pageInfo.endCursor})
   if (isLoading || error) return <p>Loading...</p>
   if (error) return <p>Oh no... {error}</p>
@@ -16,7 +14,6 @@ export default function Home() {
     links.push(...page.links.edges.map(edge => edge.node))
     return links
   }, [])
-  // const { endCursor, hasNextPage} = data.pages[0]
 
   return (
     <div>

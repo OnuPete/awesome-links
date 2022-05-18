@@ -1,0 +1,6 @@
+schema: src/graphql/**/*.graphqls
+documents: src/queries/**/*.graphql
+plugins:
+  - typescript-operations
+  - typescript-react-query
+cacheDir: .cache
