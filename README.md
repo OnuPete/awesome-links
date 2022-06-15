@@ -19,6 +19,7 @@ If running a local postgres instance, run this command to insert data into the D
 npx prisma db seed
 ```
 
+To have Auth0 hook into your local instance and create a new user in our database run,
 ```
 npx ngrok http 3000
 ```

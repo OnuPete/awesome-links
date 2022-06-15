@@ -15,6 +15,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   email     String?  @unique
+  name      String
   image     String?
   role      Role     @default(USER)
   bookmarks Link[]
@@ -34,5 +35,5 @@ model Link {
   url         String
   imageUrl    String
   category    String
-  users User[]
+  users       User[]
 }

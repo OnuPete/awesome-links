@@ -40,6 +40,8 @@ type Response {
 type Query {
   links(first: Int, after: String): Response
   link(id: String!): Link
+  me: User
+  users: [User]
 }
 
 type Mutation {
@@ -50,4 +52,5 @@ type Mutation {
     category: String!
     description: String!
   ): Link
+  createUserBookmark(linkId: String!): User
 }

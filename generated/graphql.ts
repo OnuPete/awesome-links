@@ -44,6 +44,7 @@ export type Link = {
 export type Mutation = {
   __typename?: 'Mutation';
   createLink?: Maybe<Link>;
+  createUserBookmark?: Maybe<User>;
 };
 
 
@@ -53,6 +54,11 @@ export type MutationCreateLinkArgs = {
   imageUrl: Scalars['String'];
   title: Scalars['String'];
   url: Scalars['String'];
+};
+
+
+export type MutationCreateUserBookmarkArgs = {
+  linkId: Scalars['String'];
 };
 
 export type PageInfo = {
@@ -65,6 +71,8 @@ export type Query = {
   __typename?: 'Query';
   link?: Maybe<Link>;
   links?: Maybe<Response>;
+  me?: Maybe<User>;
+  users?: Maybe<Array<Maybe<User>>>;
 };
 
 
@@ -110,6 +118,20 @@ export type CreateLinkMutationVariables = Exact<{
 
 export type CreateLinkMutation = { __typename?: 'Mutation', createLink?: { __typename?: 'Link', title?: string | null, url?: string | null, imageUrl?: string | null, category?: string | null, description?: string | null } | null };
 
+export type CreateUserBookmarkMutationVariables = Exact<{
+  linkId: Scalars['String'];
+}>;
+
+
+export type CreateUserBookmarkMutation = { __typename?: 'Mutation', createUserBookmark?: { __typename?: 'User', id?: string | null, name?: string | null, image?: string | null, bookmarks: Array<{ __typename?: 'Link', title?: string | null, url?: string | null, imageUrl?: string | null, category?: string | null, description?: string | null } | null> } | null };
+
+export type LinkQueryVariables = Exact<{
+  linkId: Scalars['String'];
+}>;
+
+
+export type LinkQuery = { __typename?: 'Query', link?: { __typename?: 'Link', id?: string | null, title?: string | null, description?: string | null, url?: string | null, category?: string | null, imageUrl?: string | null, users: Array<{ __typename?: 'User', name?: string | null, image?: string | null } | null> } | null };
+
 export type AllLinksQueryVariables = Exact<{
   first?: InputMaybe<Scalars['Int']>;
   after?: InputMaybe<Scalars['String']>;
@@ -117,6 +139,11 @@ export type AllLinksQueryVariables = Exact<{
 
 
 export type AllLinksQuery = { __typename?: 'Query', links?: { __typename?: 'Response', pageInfo?: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage?: boolean | null } | null, edges?: Array<{ __typename?: 'Edge', cursor?: string | null, node?: { __typename?: 'Link', id?: string | null, imageUrl?: string | null, url?: string | null, title?: string | null, category?: string | null, description?: string | null } | null } | null> | null } | null };
+
+export type MeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id?: string | null, name?: string | null, image?: string | null, bookmarks: Array<{ __typename?: 'Link', id?: string | null, title?: string | null, description?: string | null, url?: string | null, category?: string | null, imageUrl?: string | null } | null> } | null };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
 export type ResolversObject<TObject> = WithIndex<TObject>;
@@ -234,6 +261,7 @@ export type LinkResolvers<ContextType = Context, ParentType extends ResolversPar
 
 export type MutationResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   createLink?: Resolver<Maybe<ResolversTypes['Link']>, ParentType, ContextType, RequireFields<MutationCreateLinkArgs, 'category' | 'description' | 'imageUrl' | 'title' | 'url'>>;
+  createUserBookmark?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationCreateUserBookmarkArgs, 'linkId'>>;
 }>;
 
 export type PageInfoResolvers<ContextType = Context, ParentType extends ResolversParentTypes['PageInfo'] = ResolversParentTypes['PageInfo']> = ResolversObject<{
@@ -245,6 +273,8 @@ export type PageInfoResolvers<ContextType = Context, ParentType extends Resolver
 export type QueryResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   link?: Resolver<Maybe<ResolversTypes['Link']>, ParentType, ContextType, RequireFields<QueryLinkArgs, 'id'>>;
   links?: Resolver<Maybe<ResolversTypes['Response']>, ParentType, ContextType, Partial<QueryLinksArgs>>;
+  me?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  users?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType>;
 }>;
 
 export type ResponseResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Response'] = ResolversParentTypes['Response']> = ResolversObject<{
@@ -305,6 +335,65 @@ export const useCreateLinkMutation = <
       (variables?: CreateLinkMutationVariables) => fetcher<CreateLinkMutation, CreateLinkMutationVariables>(client, CreateLinkDocument, variables, headers)(),
       options
     );
+export const CreateUserBookmarkDocument = `
+    mutation CreateUserBookmark($linkId: String!) {
+  createUserBookmark(linkId: $linkId) {
+    id
+    name
+    image
+    bookmarks {
+      title
+      url
+      imageUrl
+      category
+      description
+    }
+  }
+}
+    `;
+export const useCreateUserBookmarkMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<CreateUserBookmarkMutation, TError, CreateUserBookmarkMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<CreateUserBookmarkMutation, TError, CreateUserBookmarkMutationVariables, TContext>(
+      ['CreateUserBookmark'],
+      (variables?: CreateUserBookmarkMutationVariables) => fetcher<CreateUserBookmarkMutation, CreateUserBookmarkMutationVariables>(client, CreateUserBookmarkDocument, variables, headers)(),
+      options
+    );
+export const LinkDocument = `
+    query Link($linkId: String!) {
+  link(id: $linkId) {
+    id
+    title
+    description
+    url
+    category
+    imageUrl
+    users {
+      name
+      image
+    }
+  }
+}
+    `;
+export const useLinkQuery = <
+      TData = LinkQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables: LinkQueryVariables,
+      options?: UseQueryOptions<LinkQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<LinkQuery, TError, TData>(
+      ['Link', variables],
+      fetcher<LinkQuery, LinkQueryVariables>(client, LinkDocument, variables, headers),
+      options
+    );
 export const AllLinksDocument = `
     query AllLinks($first: Int, $after: String) {
   links(first: $first, after: $after) {
@@ -339,5 +428,36 @@ export const useAllLinksQuery = <
     useQuery<AllLinksQuery, TError, TData>(
       variables === undefined ? ['AllLinks'] : ['AllLinks', variables],
       fetcher<AllLinksQuery, AllLinksQueryVariables>(client, AllLinksDocument, variables, headers),
+      options
+    );
+export const MeDocument = `
+    query Me {
+  me {
+    id
+    name
+    image
+    bookmarks {
+      id
+      title
+      description
+      url
+      category
+      imageUrl
+    }
+  }
+}
+    `;
+export const useMeQuery = <
+      TData = MeQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables?: MeQueryVariables,
+      options?: UseQueryOptions<MeQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<MeQuery, TError, TData>(
+      variables === undefined ? ['Me'] : ['Me', variables],
+      fetcher<MeQuery, MeQueryVariables>(client, MeDocument, variables, headers),
       options
     );
