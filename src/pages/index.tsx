@@ -1,21 +1,27 @@
 import Head from 'next/head';
 import { graphQLClient } from '../../lib/graphql-request';
 import { AwesomeLink } from '../components/AwesomeLink';
+import { Spinner } from '../components/Spinner';
 import { useAllLinksInfiniteQuery } from '../queries/useAllLinksInfiniteQuery';
 
 export default function Home() {
   // const [after, setAfter] = useState<string>()
-  const {data, isLoading, error, fetchNextPage, hasNextPage } = useAllLinksInfiniteQuery(graphQLClient, {
-    first: 2,
-    // after,
-  }, {getNextPageParam: (lastPage) => lastPage.links.pageInfo.endCursor})
-  if (isLoading || error) return <p>Loading...</p>
-  if (error) return <p>Oh no... {error}</p>
+  const { data, isLoading, error, fetchNextPage, hasNextPage } =
+    useAllLinksInfiniteQuery(
+      graphQLClient,
+      {
+        first: 2,
+        // after,
+      },
+      { getNextPageParam: (lastPage) => lastPage.links.pageInfo.endCursor }
+    );
+  if (isLoading || error) return <Spinner />;
+  if (error) return <p>Oh no... {error}</p>;
 
   const links = data.pages.reduce((links, page) => {
-    links.push(...page.links.edges.map(edge => edge.node))
-    return links
-  }, [])
+    links.push(...page.links.edges.map((edge) => edge.node));
+    return links;
+  }, []);
   // const { endCursor, hasNextPage} = data.pages[0]
 
   return (
@@ -48,10 +54,10 @@ export default function Home() {
           </button>
         ) : (
           <p className="my-10 text-center font-medium">
-            You've reached the end!{" "}
+            You've reached the end!{' '}
           </p>
         )}
-        </div>
+      </div>
     </div>
   );
 }

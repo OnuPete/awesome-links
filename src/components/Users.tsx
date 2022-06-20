@@ -2,12 +2,16 @@ import Link from 'next/link';
 import React from 'react';
 import { useLinkQuery } from '../../generated/graphql';
 import { graphQLClient } from '../../lib/graphql-request';
+import { Spinner } from './Spinner';
 
 export const Users = ({ linkId }) => {
-  const { data } = useLinkQuery(graphQLClient, { linkId: linkId as string });
+  const { data, isLoading } = useLinkQuery(graphQLClient, {
+    linkId: linkId as string,
+  });
   const link = data?.link;
   const users = link?.users || [];
   console.log({ link });
+  if (isLoading) return <Spinner />;
   return (
     <>
       {users.map((user, id) => (

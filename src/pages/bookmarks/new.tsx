@@ -1,5 +1,7 @@
+import { getSession } from '@auth0/nextjs-auth0';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { toast } from 'react-hot-toast';
 import { useCreateUserBookmarkMutation } from '../../../generated/graphql';
 import { graphQLClient } from '../../../lib/graphql-request';
 
@@ -12,12 +14,29 @@ const NewBookmark = () => {
   const handleAddToBookmarks = async () => {
     try {
       await createUserBookmark.mutateAsync({ linkId });
+      toast.success('Redirecting to link.');
       router.push(`/links/${linkId}`);
     } catch (err) {
+      toast.error('Error adding bookmark.');
       console.error(err);
     }
   };
   return <button onClick={handleAddToBookmarks}>Add To Bookmarks</button>;
+};
+
+export const getServerSideProps = async function ({ req, res }) {
+  const session = getSession(req, res);
+
+  if (!session) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/api/auth/login',
+      },
+      props: {},
+    };
+  }
+  return { props: {} };
 };
 
 export default NewBookmark;

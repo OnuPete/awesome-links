@@ -1,39 +1,64 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StreamChat } from 'stream-chat';
-import { Chat, Channel, ChannelHeader, MessageInput, MessageList, Thread, Window } from 'stream-chat-react';
-
+import {
+  Channel,
+  ChannelHeader,
+  ChannelList,
+  Chat,
+  LoadingIndicator,
+  MessageInput,
+  MessageList,
+  Thread,
+  Window,
+} from 'stream-chat-react';
 import 'stream-chat-react/dist/css/index.css';
+const STREAM_API_KEY = process.env.NEXT_PUBLIC_STREAM_API_KEY;
+const userToken =
+  'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoibmFtZWxlc3MtdmlvbGV0LTIifQ.FKMamQsZIsBR4AcOANfuuj7GNUmFeYTKDfsd4Sov1l0';
 
-const chatClient = StreamChat.getInstance('dz5f4d5kzrue');
-const userToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoicXVpZXQtdGVybS00IiwiZXhwIjoxNjUyOTEyMTE1fQ.Sz8OjEz-ybwzkVd6Y-Euu_42WNT13x5h4owBLVRA5IU';
+const filters = { type: 'messaging', members: { $in: ['nameless-violet-2'] } };
+const sort = { last_message_at: -1 };
 
-chatClient.connectUser(
-  {
-    id: 'quiet-term-4',
-    name: 'quiet',
-    image: 'https://getstream.io/random_png/?id=quiet-term-4&name=quiet',
-  },
-  userToken,
-);
+const App = () => {
+  const [chatClient, setChatClient] = useState(null);
+  console.log(process.env.NEXT_PUBLIC_STREAM_API_KEY);
+  useEffect(() => {
+    const initChat = async () => {
+      const client = StreamChat.getInstance(STREAM_API_KEY);
 
-const channel = chatClient.channel('messaging', 'custom_channel_id', {
-  // add as many custom fields as you'd like
-  image: 'https://www.drupal.org/files/project-images/react.png',
-  name: 'Talk about React',
-  members: ['quiet-term-4'],
-});
+      await client.connectUser(
+        {
+          id: 'nameless-violet-2',
+          name: 'nameless-violet-2',
+          image:
+            'https://getstream.io/random_png/?id=nameless-violet-2&name=nameless-violet-2',
+        },
+        userToken
+      );
 
-const App = () => (
-  <Chat client={chatClient} theme='messaging light'>
-    <Channel channel={channel}>
-      <Window>
-        <ChannelHeader />
-        <MessageList />
-        <MessageInput />
-      </Window>
-      <Thread />
-    </Channel>
-  </Chat>
-);
+      setChatClient(client);
+    };
+
+    initChat();
+  }, []);
+
+  if (!chatClient) {
+    return <LoadingIndicator />;
+  }
+
+  return (
+    <Chat client={chatClient} theme="messaging light">
+      <ChannelList filters={filters} sort={sort} />
+      <Channel>
+        <Window>
+          <ChannelHeader />
+          <MessageList />
+          <MessageInput />
+        </Window>
+        <Thread />
+      </Channel>
+    </Chat>
+  );
+};
 
 export default App;
