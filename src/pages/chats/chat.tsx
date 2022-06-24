@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { StreamChat } from 'stream-chat';
+import { useEffect, useState } from 'react';
+import { AscDesc, StreamChat } from 'stream-chat';
 import {
   Channel,
   ChannelHeader,
@@ -17,7 +17,7 @@ const userToken =
   'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoibmFtZWxlc3MtdmlvbGV0LTIifQ.FKMamQsZIsBR4AcOANfuuj7GNUmFeYTKDfsd4Sov1l0';
 
 const filters = { type: 'messaging', members: { $in: ['nameless-violet-2'] } };
-const sort = { last_message_at: -1 };
+const sort: { last_message_at: AscDesc } = { last_message_at: -1 };
 
 const App = () => {
   const [chatClient, setChatClient] = useState(null);
