@@ -1,9 +1,8 @@
 import { getSession } from '@auth0/nextjs-auth0';
 import { useRouter } from 'next/router';
-import React from 'react';
 import { toast } from 'react-hot-toast';
-import { useCreateUserBookmarkMutation } from '../../../generated/graphql';
-import { graphQLClient } from '../../../lib/graphql-request';
+import { graphQLClient } from '../../lib/graphql-request';
+import { useCreateUserBookmarkMutation } from '../../queries/createUserBookmark.graphql';
 
 const NewBookmark = () => {
   const router = useRouter();

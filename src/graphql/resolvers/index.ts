@@ -1,6 +1,6 @@
-import { Resolvers } from '../../generated/graphql';
-import { link, links, createLink } from './links';
-import { me, users, createUserBookmark } from './users';
+import { Resolvers } from 'graphql-let/__generated__/__types__';
+import { createLink, link, links } from './links';
+import { createUserBookmark, me, users } from './users';
 
 export const resolvers: Resolvers = {
   Query: {

@@ -1,6 +1,9 @@
-import { MutationResolvers, QueryResolvers } from "../../generated/graphql";
+import {
+  MutationResolvers,
+  QueryResolvers,
+} from 'graphql-let/__generated__/__types__';
 
-export const links: QueryResolvers["links"] = async (_parent, args, ctx) => {
+export const links: QueryResolvers['links'] = async (_parent, args, ctx) => {
   let queryResults = null;
 
   if (args.after) {
@@ -33,7 +36,7 @@ export const links: QueryResolvers["links"] = async (_parent, args, ctx) => {
         id: myCursor,
       },
       orderBy: {
-        id: "asc",
+        id: 'asc',
       },
     });
     const result = {
@@ -59,13 +62,13 @@ export const links: QueryResolvers["links"] = async (_parent, args, ctx) => {
   };
 };
 
-export const link: QueryResolvers["link"] = async (_parent, args, ctx) =>
+export const link: QueryResolvers['link'] = async (_parent, args, ctx) =>
   await ctx.prisma.link.findUnique({
     where: { id: args.id },
     include: { users: true },
   });
 
-export const createLink: MutationResolvers["createLink"] = async (
+export const createLink: MutationResolvers['createLink'] = async (
   _parent,
   args,
   ctx
@@ -74,9 +77,11 @@ export const createLink: MutationResolvers["createLink"] = async (
     throw new Error(`You need to be logged in to perform an action`);
   }
 
-  const user = await ctx.prisma.user.findUnique({where: {email: ctx.user.email}})
-  if(user.role!== 'ADMIN') {
-    throw new Error('You do not have permission to perform action')
+  const user = await ctx.prisma.user.findUnique({
+    where: { email: ctx.user.email },
+  });
+  if (user.role !== 'ADMIN') {
+    throw new Error('You do not have permission to perform action');
   }
 
   const newLink = {

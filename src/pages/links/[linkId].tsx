@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useMeQuery } from '../../../generated/graphql';
-import { graphQLClient } from '../../../lib/graphql-request';
 import { Spinner } from '../../components/Spinner';
 import { Users } from '../../components/Users';
+import { graphQLClient } from '../../lib/graphql-request';
+import { useMeQuery } from '../../queries/me.graphql';
 
 const LinkComponent = () => {
   const { data, isLoading } = useMeQuery(graphQLClient);

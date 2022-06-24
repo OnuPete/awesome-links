@@ -2,9 +2,9 @@
 import { getSession } from '@auth0/nextjs-auth0';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import { useCreateLinkMutation } from '../generated/graphql';
 import { graphQLClient } from '../lib/graphql-request';
 import prisma from '../lib/prisma';
+import { useCreateLinkMutation } from '../queries/createLink.graphql';
 
 const Admin = () => {
   const {

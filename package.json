@@ -6,10 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "generate": "yarn generate:prisma && yarn generate:gqlcodegen",
-    "generate:gqlcodegen": "graphql-codegen --config codegen.yml",
+    "db:push": "prisma db push",
+    "generate": "yarn generate:prisma && yarn generate:graphql-let",
+    "generate:graphql-let": "graphql-let",
     "generate:prisma": "prisma generate",
-    "vercel-build": "yarn graphql-let && yarn generate:prisma && next build"
+    "vercel-build": "yarn generate && next build"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^1.8.0",

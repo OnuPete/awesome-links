@@ -1,19 +1,23 @@
-import { GraphQLClient } from "graphql-request";
+import { GraphQLClient } from 'graphql-request';
+import { useInfiniteQuery, UseInfiniteQueryOptions } from 'react-query';
 import {
   AllLinksDocument,
   AllLinksQuery,
   AllLinksQueryVariables,
-} from "../generated/graphql";
-import { useInfiniteQuery, UseInfiniteQueryOptions } from "react-query";
+} from './links.graphql';
 
 export function fetcher<TData, TVariables>(
   client: GraphQLClient,
   query: string,
   variables?: TVariables,
-  headers?: RequestInit["headers"]
+  headers?: RequestInit['headers']
 ) {
-  return async ({pageParam}: {pageParam?: any}): Promise<TData> =>
-    client.request<TData, TVariables>(query, pageParam ? {...variables, after: pageParam} : variables, headers);
+  return async ({ pageParam }: { pageParam?: any }): Promise<TData> =>
+    client.request<TData, TVariables>(
+      query,
+      pageParam ? { ...variables, after: pageParam } : variables,
+      headers
+    );
 }
 
 export const useAllLinksInfiniteQuery = <
@@ -23,12 +27,12 @@ export const useAllLinksInfiniteQuery = <
   client: GraphQLClient,
   variables?: AllLinksQueryVariables,
   options?: UseInfiniteQueryOptions<AllLinksQuery, TError, TData>,
-  headers?: RequestInit["headers"]
+  headers?: RequestInit['headers']
 ) => {
   return useInfiniteQuery<AllLinksQuery, TError, TData>(
     variables === undefined
-      ? ["AllLinksInfinite"]
-      : ["AllLinksInfinite", variables],
+      ? ['AllLinksInfinite']
+      : ['AllLinksInfinite', variables],
     fetcher<AllLinksQuery, AllLinksQueryVariables>(
       client,
       AllLinksDocument,

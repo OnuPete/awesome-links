@@ -1,7 +1,6 @@
 import Link from 'next/link';
-import React from 'react';
-import { useLinkQuery } from '../../generated/graphql';
-import { graphQLClient } from '../../lib/graphql-request';
+import { graphQLClient } from '../lib/graphql-request';
+import { useLinkQuery } from '../queries/link.graphql';
 import { Spinner } from './Spinner';
 
 export const Users = ({ linkId }) => {

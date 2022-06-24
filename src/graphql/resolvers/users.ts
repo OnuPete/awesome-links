@@ -1,4 +1,7 @@
-import { MutationResolvers, QueryResolvers } from '../../generated/graphql';
+import {
+  MutationResolvers,
+  QueryResolvers,
+} from 'graphql-let/__generated__/__types__';
 
 export const me: QueryResolvers['me'] = async (_parent, _args, ctx) =>
   await ctx.prisma.user.findUnique({ where: { email: ctx.user.email } });
