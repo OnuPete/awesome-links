@@ -1,11 +1,10 @@
 // pages/admin.tsx
-import React from 'react'
-import { useForm } from 'react-hook-form'
-import toast, { Toaster } from 'react-hot-toast'
-import { getSession } from '@auth0/nextjs-auth0'
-import prisma from '../lib/prisma'
-import { useCreateLinkMutation } from '../generated/graphql';
+import { getSession } from '@auth0/nextjs-auth0';
+import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import { graphQLClient } from '../lib/graphql-request';
+import prisma from '../lib/prisma';
+import { useCreateLinkMutation } from '../queries/createLink.graphql';
 
 const Admin = () => {
   const {
@@ -13,19 +12,21 @@ const Admin = () => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm()
-  const createLink = useCreateLinkMutation(graphQLClient, {onSuccess: () => reset()})
+  } = useForm();
+  const createLink = useCreateLinkMutation(graphQLClient, {
+    onSuccess: () => reset(),
+  });
 
-  const uploadPhoto = async e => {
-    const file = e.target.files[0]
-    const filename = encodeURIComponent(file.name)
-    const res = await fetch(`/api/upload-image?file=${filename}`)
-    const data = await res.json()
-    const formData = new FormData()
+  const uploadPhoto = async (e) => {
+    const file = e.target.files[0];
+    const filename = encodeURIComponent(file.name);
+    const res = await fetch(`/api/upload-image?file=${filename}`);
+    const data = await res.json();
+    const formData = new FormData();
 
-    Object.entries({...data.fields, file}).forEach(([key, value]) => {
-      formData.append(key, value as string | Blob)
-    })
+    Object.entries({ ...data.fields, file }).forEach(([key, value]) => {
+      formData.append(key, value as string | Blob);
+    });
 
     toast.promise(
       fetch(data.url, {
@@ -36,30 +37,32 @@ const Admin = () => {
         loading: 'Uploading...',
         success: 'Image successfuly uploaded! 🎉',
         error: `Upload failed 😥 Please try again ${createLink.error}`,
-      })
-  }
+      }
+    );
+  };
 
-  const onSubmit = async data => {
-    const { title, url, category, description, image } = data
-    const imageUrl = `https://${process.env.NEXT_PUBLIC_AWS_S3_BUCKET_NAME}.s3.amazonaws.com/${image[0].name}`
-    const variables = { title, url, category, description, imageUrl }
+  const onSubmit = async (data) => {
+    const { title, url, category, description, image } = data;
+    const imageUrl = `https://${process.env.NEXT_PUBLIC_AWS_S3_BUCKET_NAME}.s3.amazonaws.com/${image[0].name}`;
+    const variables = { title, url, category, description, imageUrl };
     try {
       toast.promise(createLink.mutateAsync(variables), {
         loading: 'Creating new link..',
         success: 'Link successfully created!🎉',
         error: `Something went wrong 😥 Please try again -  ${createLink.error}`,
-      })
-
+      });
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-  }
+  };
 
   return (
     <div className="container mx-auto max-w-md py-12">
-      <Toaster />
       <h1 className="text-3xl font-medium my-5">Create a new link</h1>
-      <form className="grid grid-cols-1 gap-y-6 shadow-lg p-8 rounded-lg" onSubmit={handleSubmit(onSubmit)}>
+      <form
+        className="grid grid-cols-1 gap-y-6 shadow-lg p-8 rounded-lg"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <label className="block">
           <span className="text-gray-700">Title</span>
           <input
@@ -101,7 +104,9 @@ const Admin = () => {
           />
         </label>
         <label className="block">
-          <span className="text-gray-700">Upload a .png or .jpg image (max 1MB).</span>
+          <span className="text-gray-700">
+            Upload a .png or .jpg image (max 1MB).
+          </span>
           <input
             {...register('image', { required: true })}
             onChange={uploadPhoto}
@@ -134,13 +139,13 @@ const Admin = () => {
         </button>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default Admin
+export default Admin;
 
 export const getServerSideProps = async ({ req, res }) => {
-  const session = getSession(req, res)
+  const session = getSession(req, res);
 
   if (!session) {
     return {
@@ -149,7 +154,7 @@ export const getServerSideProps = async ({ req, res }) => {
         destination: '/api/auth/login',
       },
       props: {},
-    }
+    };
   }
 
   const user = await prisma.user.findUnique({
@@ -174,5 +179,5 @@ export const getServerSideProps = async ({ req, res }) => {
 
   return {
     props: {},
-  }
-}
+  };
+};

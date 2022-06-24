@@ -1,0 +1,14 @@
+mutation CreateUserBookmark($linkId: String!) {
+  createUserBookmark(linkId: $linkId) {
+    id
+    name
+    image
+    bookmarks {
+      title
+      url
+      imageUrl
+      category
+      description
+    }
+  }
+}

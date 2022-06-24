@@ -15,9 +15,10 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   email     String?  @unique
-  image     String?
   role      Role     @default(USER)
   bookmarks Link[]
+  name      String
+  image     String?
 }
 
 enum Role {
@@ -34,5 +35,5 @@ model Link {
   url         String
   imageUrl    String
   category    String
-  users User[]
+  users       User[]
 }

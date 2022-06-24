@@ -2,5 +2,14 @@ schema: src/graphql/**/*.graphqls
 documents: src/queries/**/*.graphql
 plugins:
   - typescript-operations
+  - typescript-resolvers
   - typescript-react-query
 cacheDir: .cache
+config:
+  contextType: ../graphql/context#Context
+  fetcher: graphql-request
+  useIndexSignature: true
+  mapperTypeSuffix: Model
+  mappers:
+    User: '@prisma/client/index.d#User'
+    Link: '@prisma/client/index.d#Link'

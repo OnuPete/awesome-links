@@ -1,0 +1,14 @@
+query Link($linkId: String!) {
+  link(id: $linkId) {
+    id
+    title
+    description
+    url
+    category
+    imageUrl
+    users {
+      name
+      image
+    }
+  }
+}
