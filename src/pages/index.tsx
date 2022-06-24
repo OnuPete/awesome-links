@@ -1,17 +1,15 @@
 import Head from 'next/head';
-import { graphQLClient } from '../../lib/graphql-request';
 import { AwesomeLink } from '../components/AwesomeLink';
 import { Spinner } from '../components/Spinner';
+import { graphQLClient } from '../lib/graphql-request';
 import { useAllLinksInfiniteQuery } from '../queries/useAllLinksInfiniteQuery';
 
 export default function Home() {
-  // const [after, setAfter] = useState<string>()
   const { data, isLoading, error, fetchNextPage, hasNextPage } =
     useAllLinksInfiniteQuery(
       graphQLClient,
       {
         first: 2,
-        // after,
       },
       { getNextPageParam: (lastPage) => lastPage.links.pageInfo.endCursor }
     );
@@ -22,7 +20,6 @@ export default function Home() {
     links.push(...page.links.edges.map((edge) => edge.node));
     return links;
   }, []);
-  // const { endCursor, hasNextPage} = data.pages[0]
 
   return (
     <div>

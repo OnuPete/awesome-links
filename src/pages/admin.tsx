@@ -1,11 +1,10 @@
 // pages/admin.tsx
-import React from 'react';
-import { useForm } from 'react-hook-form';
-import toast, { Toaster } from 'react-hot-toast';
 import { getSession } from '@auth0/nextjs-auth0';
-import prisma from '../../lib/prisma';
-import { useCreateLinkMutation } from '../../generated/graphql';
-import { graphQLClient } from '../../lib/graphql-request';
+import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import { useCreateLinkMutation } from '../generated/graphql';
+import { graphQLClient } from '../lib/graphql-request';
+import prisma from '../lib/prisma';
 
 const Admin = () => {
   const {
