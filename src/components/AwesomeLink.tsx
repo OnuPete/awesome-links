@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import React from 'react';
 
 export const AwesomeLink = ({
   imageUrl,
@@ -11,15 +10,15 @@ export const AwesomeLink = ({
 }) => {
   return (
     <Link href={`/links/${id}`}>
-      <a key={id} className="shadow  max-w-md  rounded">
+      <a key={id} className="card  max-w-md bg-base-100 shadow-xl">
         <img src={imageUrl} />
         <div className="p-5 flex flex-col space-y-2">
-          <p className="text-sm text-blue-500">{category}</p>
-          <p className="text-lg font-medium">{title}</p>
-          <p className="text-gray-600">{description}</p>
+          <p className="text-sm">{category}</p>
+          <p className="card-title">{title}</p>
+          <p>{description}</p>
           {/* <a href={url} className="flex hover:text-blue-500"> */}
           {/* removes https from url */}
-          {url.replace(/(^\w+:|^)\/\//, '')}
+          <p className="text-sm">{url.replace(/(^\w+:|^)\/\//, '')}</p>
           <svg
             className="w-6 h-6"
             fill="currentColor"

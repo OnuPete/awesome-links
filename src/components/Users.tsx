@@ -9,7 +9,6 @@ export const Users = ({ linkId }) => {
   });
   const link = data?.link;
   const users = link?.users || [];
-  console.log({ link });
   if (isLoading) return <Spinner />;
   return (
     <>

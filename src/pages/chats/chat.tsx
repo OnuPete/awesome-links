@@ -22,6 +22,10 @@ const sort: { last_message_at: AscDesc } = { last_message_at: -1 };
 const App = () => {
   const [chatClient, setChatClient] = useState(null);
   console.log(process.env.NEXT_PUBLIC_STREAM_API_KEY);
+
+  // Connect multiple users to the same channel (group chat)
+  // https://getstream.io/chat/docs/multi-user-channels/
+
   useEffect(() => {
     const initChat = async () => {
       const client = StreamChat.getInstance(STREAM_API_KEY);

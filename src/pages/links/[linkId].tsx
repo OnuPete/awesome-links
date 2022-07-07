@@ -10,7 +10,7 @@ const LinkComponent = () => {
   console.log(data);
   const router = useRouter();
   const { linkId } = router.query;
-  const bookmark = (data?.me.bookmarks || []).find(
+  const bookmark = (data?.me?.bookmarks || []).find(
     (bookmark) => bookmark.id === linkId
   );
 
